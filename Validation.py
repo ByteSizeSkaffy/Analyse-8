@@ -4,7 +4,7 @@ import random
 import Validation
 import sqlite3
 #search user
-def search_members(search_key):
+def search_member(search_key):
 
   # Connect to the SQLite database
   conn = sqlite3.connect('members.db')
@@ -20,13 +20,18 @@ def search_members(search_key):
     print("Search Results:")
     for row in results:
       print(f"Member ID: {row[0]}, Name: {row[1]}, Address: {row[3]}, Email: {row[4]}, Phone: {row[5]}")
+      
+    # Close the connection    
+    cursor.close()
+    conn.close()
+    return results
   else:
     print("No matching members found.")
 
-    # Close the database connection
+    # Close the connection
     cursor.close()
     conn.close()
-
+    return False
 
 #creates a member
 def create_member():
@@ -45,23 +50,28 @@ def create_member():
   
   memberdb.execute('''
   INSERT INTO members (
-    id INTEGER PRIMARY KEY,
-    firstname TEXT, Last name TEXT,
+    id INTEGER PRIMARY KEY, 
+    firstname TEXT, 
+    Last name TEXT, 
     age INTEGER, 
     gender TEXT, 
     weight INTEGER, 
-    Address TEXT, 
-    email TEXT, 
+    Address TEXT,
+    email TEXT,
     phonenumber INTEGER, 
+    password TEXT 
     ) 
     VALUES (
-      member_id,
+      member_id, 
       firstname, 
-      lastname,
-      age,
-      phonenumber,
-      weight,
-      address
+      lastname, 
+      age, 
+      gender, 
+      weight, 
+      address,
+      email, 
+      phonenumber, 
+      password
       ) ''')
   memberdb.commit()
   memberdb.close()
@@ -96,6 +106,14 @@ def check_username(string):
         unique_set.add(char)
     return True
 
+def modifymember():
+   members = sqlite3.connect('members.db')
+   memberdb = members.cursor()
+   results = search_member(input("please enter which user you'd like to alter:"))
+
+
+
+
 def check_password(string):
     # Check if the string length is between 12 and 30 characters
     if len(string) < 12 or len(string) > 30:
@@ -122,7 +140,7 @@ def check_password(string):
 #creates a member id
 def create_member_id():
     current_year = datetime.datetime.now().strftime("%Y")
-    last_digit_year = (datetime.datetime.now().strftime("%Y"))%10
+    last_digit_year = int((datetime.datetime.now().strftime("%Y")))%10
     print(last_digit_year)
     random_digits = [str(random.randint(0, 9)) for _ in range(7)]
     checksum = (sum(int(digit) for digit in random_digits) + last_digit_year) % 10
