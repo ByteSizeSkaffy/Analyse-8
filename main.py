@@ -1,6 +1,7 @@
 import sqlite3
 import datetime
 import random
+import re
 #creates databases if they don't exist
 
 super_usersdb = sqlite3.connect('super_users.db')
@@ -23,6 +24,23 @@ result = super_users.fetchone()
 if result[0]==0:
   super_users.execute("INSERT INTO super_users (name, age, username, registrationdate, password) VALUES ('admin', 20, 'super_admin', '21/9/2023', 'admin_123!')")
   trainerdb.execute("INSERT INTO trainers (name, age, username, registrationdate, password) VALUES ('joe', 20, 'trainer', '20/10/2011','trainer')")
+  memberdb.execute('''INSERT INTO members (
+    id INTEGER PRIMARY KEY, 
+    firstname TEXT, Last name TEXT, 
+    age INTEGER, gender TEXT, weight INTEGER, 
+    Address TEXT, email TEXT, phonenumber INTEGER, 
+    password TEXT) 
+        VALUES (
+      212328742,
+      'Mike', 
+      'Thomson', 
+      'man',
+      '',
+      123,
+      '123 fake street',
+      'thompson@hotmale.com',
+      3198762716, 
+      'member')''') 
   trainerdb.commit()
   super_users.commit()
 
@@ -35,6 +53,60 @@ def create_member_id():
     checksum = (sum(int(digit) for digit in random_digits) + last_digit_year) % 10
     member_id = current_year + ''.join(random_digits) + str(checksum)
     return member_id
+
+#checks if username complies with standards laid out in the assignment
+
+def check_username(string):
+    # Check if the string length is between 8 and 12 characters
+    if len(string) < 8 or len(string) > 12:
+      print("Username must be between 8 and 12 characters long")
+      return False
+    
+    # Check if the string starts with a letter or underscore
+    if not re.match(r'^[a-zA-Z_]', string):
+      print("Username must start with a letter or underscore")
+      return False
+
+    # Check if the string contains valid characters
+    if not re.match(r'^[a-zA-Z0-9_\'\.]+$', string):
+      print("Username must only contain letters, numbers, underscores, apostrophes, and periods")
+      return False
+
+    # Convert the string to lowercase for uniqueness *check
+    string = string.lower()
+
+    # Check if the string is unique
+    unique_set = set()
+    for char in string:
+        if char in unique_set:
+            return False
+        unique_set.add(char)
+    return True
+
+def check_password(string):
+    # Check if the string length is between 12 and 30 characters
+    if len(string) < 12 or len(string) > 30:
+        return False
+
+    # Check if the string contains at least one lowercase letter
+    if not re.search(r'[a-z]', string):
+        return False
+
+    # Check if the string contains at least one uppercase letter
+    if not re.search(r'[A-Z]', string):
+        return False
+
+    # Check if the string contains at least one digit
+    if not re.search(r'\d', string):
+        return False
+
+    # Check if the string contains at least one special character
+    if not re.search(r'[~!@#$%&_\-=\\|()\[\]{}:;\'<>,.?/]', string):
+        return False
+
+    return True
+
+ 
 
 #creates a member
 def create_member():
@@ -76,7 +148,7 @@ def search_members(search_key):
   conn = sqlite3.connect('members.db')
   cursor = conn.cursor()
 
-  # Search for members using partial keys
+  # Search for members using partial keys should be sql injection safe but im not a cryptographer
   cursor.execute("SELECT * FROM members WHERE name LIKE ? OR address LIKE ? OR email LIKE ? OR phone LIKE ? OR member_id LIKE ?",
                ('%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%' + '%' + search_key + '%'))
   results = cursor.fetchall()
