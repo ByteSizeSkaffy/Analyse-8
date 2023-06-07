@@ -1,5 +1,7 @@
 import sqlite3
 import Validation
+import Hashing
+import Logging
 
 
 #login as a trainer
@@ -8,18 +10,21 @@ def login_trainer():
   trainerdb = trainers.cursor()
   username = input("Enter your username: ")
   password = input("Enter your password: ")
+  
   #needs to be compared to hash
   trainerdb.execute("SELECT * FROM trainers WHERE username = ? AND password = ?", (username, password))
   result = trainerdb.fetchone()
   if result:
     print("Login successful")
     #close the connection
+    Logging.logLoginAttempt(username, True, False, additionalInfo="Trainer Login")
     trainerdb.close()
     trainers.close()
     return True
   else:
     print("Login unsuccessful")
     #close the connection
+    Logging.logLoginAttempt(username, False, True, additionalInfo="Trainer Login")
     trainerdb.close()
     trainers.close()    
     return False

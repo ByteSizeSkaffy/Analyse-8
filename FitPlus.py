@@ -4,6 +4,9 @@ import random
 import re
 import Validation
 import Trainer
+import sys
+import Logging
+
 #creates databases if they don't exist
 super_usersdb = sqlite3.connect('super_users.db')
 super_users = super_usersdb.cursor()

@@ -3,6 +3,7 @@ import datetime
 import random
 import Validation
 import sqlite3
+import Hashing
 #search user
 def search_member(search_key):
 
@@ -46,7 +47,11 @@ def create_member():
   weight = input("Enter  weight: ")
   address = input("Enter  address: ")
   email = input("Enter  email: ")
+  #hier Password Hash call
+  password = Hashing.hashPW(input("Enter password"))
   member_id = Validation.create_member_id()
+
+  
   
   memberdb.execute('''
   INSERT INTO members (
