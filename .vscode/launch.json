@@ -15,7 +15,7 @@
             "name": "Python: main",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
         }
