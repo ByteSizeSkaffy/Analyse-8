@@ -22,3 +22,4 @@ thisguy123 logged in on 2023-06-09 12:27:20.104092, which was Successful. Additi
 thisguy123 logged in on 2023-06-09 12:35:12.305109, which was Successful. Additional info: Trainer Login
 thisguy123 logged in on 2023-06-09 12:36:04.980091, which was Successful. Additional info: Trainer Login
 thisguy123 logged in on 2023-06-09 13:04:42.095600, which was Successful. Additional info: Trainer Login
+thisguy123 logged in on 2023-06-09 16:08:29.800123, which was Successful. Additional info: Trainer Login
