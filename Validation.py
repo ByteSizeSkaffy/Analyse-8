@@ -12,15 +12,17 @@ def search_member(search_key):
   cursor = conn.cursor()
 
   # Search for members using partial keys should be sql injection safe but im not a cryptographer
-  cursor.execute("SELECT * FROM members WHERE name LIKE ? OR address LIKE ? OR email LIKE ? OR phone LIKE ? OR member_id LIKE ?",
-               ('%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%' + '%' + search_key + '%'))
+  search_pattern = '%' + search_key + '%'
+  cursor.execute("SELECT * FROM members WHERE firstname LIKE ? OR address LIKE ? OR email LIKE ? OR id LIKE ? OR lastname LIKE ?",
+               (search_pattern, search_pattern, search_pattern, search_pattern, search_pattern))
   results = cursor.fetchall()
+
 
   # Display the search results
   if results:
     print("Search Results:")
     for row in results:
-      print(f"Member ID: {row[0]}, Name: {row[1]}, Address: {row[3]}, Email: {row[4]}, Phone: {row[5]}")
+      print(f"Member ID: {row[0]}, First Name: {row[1]}, Last Name: {row[2]}, Email: {row[7]}, Age: {row[3]}, gender: {row[4]}, Weight: {row[5]} Address: {row[6]}, Phone number:{row[8]}")
       
     # Close the connection    
     cursor.close()
@@ -39,46 +41,49 @@ def create_member():
   members = sqlite3.connect('members.db')
   memberdb = members.cursor()
 
-  firstname = input("Enter  first name: ")
-  lastname = input("Enter  last name: ")
-  age = input("Enter  age: ")
-  phonenumber = input("Enter  phone number: ")
-  gender = input("Enter  gender:")
-  weight = input("Enter  weight: ")
-  address = input("Enter  address: ")
-  email = input("Enter  email: ")
+  firstname = input("Enter first name: ")
+  lastname = input("Enter last name: ")
+  age = input("Enter age: ")
+  phonenumber = input("Enter phone number: ")
+  gender = input("Enter gender: ")
+  weight = input("Enter weight: ")
+  address = input("Enter address: ")
+  email = input("Enter email: ")
+  print(" * \n**Building Member ID**\n        *")
+  member_id = create_member_id()
+  
   #hier Password Hash call
   password = Hashing.hashPW(input("Enter password"))
   member_id = Validation.create_member_id()
 
-  
+  #TODO: check the input for injection attacks
   
   memberdb.execute('''
   INSERT INTO members (
-    id INTEGER PRIMARY KEY, 
-    firstname TEXT, 
-    Last name TEXT, 
-    age INTEGER, 
-    gender TEXT, 
-    weight INTEGER, 
-    Address TEXT,
-    email TEXT,
-    phonenumber INTEGER, 
-    password TEXT 
+    id, 
+    firstname, 
+    Lastname, 
+    age, 
+    gender, 
+    weight, 
+    Address,
+    email,
+    phonenumber, 
+    password 
     ) 
-    VALUES (
-      member_id, 
-      firstname, 
-      lastname, 
-      age, 
-      gender, 
-      weight, 
-      address,
-      email, 
-      phonenumber, 
-      password
-      ) ''')
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+    member_id, 
+    firstname, 
+    lastname, 
+    age, 
+    gender, 
+    weight, 
+    address,
+    email, 
+    phonenumber, 
+    password))
   memberdb.commit()
+  print("Member created successfully")
   memberdb.close()
 
 

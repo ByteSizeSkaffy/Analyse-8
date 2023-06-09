@@ -57,7 +57,7 @@ if result[0] == 0:
         123,
         '123 fake street',
         'thompson@hotmale.com',
-        3198762716, 
+        +31063198762716, 
         'member'
     )
 ''')
@@ -78,3 +78,7 @@ print("2. log in as a trainer")
 
 
 userinput = input("Enter your choice: ")
+if(userinput == "1"):
+    Validation.create_member()
+elif(userinput == "2"):
+    Trainer.start_trainer_menu()
