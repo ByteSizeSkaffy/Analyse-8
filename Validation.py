@@ -118,63 +118,57 @@ def check_username(string):
     return True
 
 def modifymember():
-    members = sqlite3.connect('members.db')
-    memberdb = members.cursor()
-    results = search_member(input("Please enter which user you'd like to alter:"))
+  members = sqlite3.connect('members.db')
+  memberdb = members.cursor()
+  results = search_member(input("Please enter which user you'd like to alter:"))
     
-    if results:
-        row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
-        
-        if 1 <= row <= len(results):
-            selected_user = results[row - 1]
+  if results:
+    row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
+       
+    if 1 <= row <= len(results):
+      selected_user = results[row - 1]
             
-            print("Selected User:")
-            print_user(selected_user)
+      print("Selected User:")
             
-            field = int(input("Which field would you like to modify?\n"
-                              "[1] First Name\n"
-                              "[2] Last Name\n"
-                              "[3] Age\n"
-                              "[4] Phone Number\n"
-                              "[5] Gender\n"
-                              "[6] Weight\n"
-                              "[7] Address\n"
-                              "[8] Email\n"
-                              "[9] Password\n"
-                              "Enter the corresponding number: "))
+    field = int(input("Which field would you like to modify?\n"
+    "[1] First Name\n"
+    "[2] Last Name\n"
+    "[3] Age\n"
+    "[4] Phone Number\n"
+    "[5] Gender\n"
+    "[6] Weight\n"
+    "[7] Address\n"
+    "[8] Email\n"
+    "[9] Password\n"
+    "Enter the corresponding number: "))
             
-            if 1 <= field <= 9:
-                new_value = input("Enter the new value: ")
+    if 1 <= field <= 9:
+     new_value = input("Enter the new value: ")
                 
-                # Update the selected field for the selected user
-                if field == 1:
-                    memberdb.execute("UPDATE members SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 2:
-                    memberdb.execute("UPDATE members SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 3:
-                    memberdb.execute("UPDATE members SET age = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 4:
-                    memberdb.execute("UPDATE members SET phonenumber = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 5:
-                    memberdb.execute("UPDATE members SET gender = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 6:
-                    memberdb.execute("UPDATE members SET weight = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 7:
-                    memberdb.execute("UPDATE members SET Address = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 8:
-                    memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 9:
-                    memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (new_value, selected_user[0]))
-                
-                members.commit()
-                print("User updated successfully!")
-            else:
-                print("Invalid field number. Please try again.")
-        else:
-            print("Invalid row number. Please try again.")
-    else:
-        print("No matching user found.")
-
+      # Update the selected field for the selected user
+    if field == 1:
+      memberdb.execute("UPDATE members SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 2:
+      memberdb.execute("UPDATE members SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 3:
+      memberdb.execute("UPDATE members SET age = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 4:
+      memberdb.execute("UPDATE members SET phonenumber = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 5:
+      memberdb.execute("UPDATE members SET gender = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 6:
+      memberdb.execute("UPDATE members SET weight = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 7:
+      memberdb.execute("UPDATE members SET Address = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 8:
+      memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 9:
+      memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+    members.commit()
+    print("User updated successfully!")
+  else:
+      print("Invalid field number. Please try again.")
+  members.close()
 
 
 
