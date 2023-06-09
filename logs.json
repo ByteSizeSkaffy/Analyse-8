@@ -1,0 +1,34 @@
+{
+    "Beginning of file at 2023-06-09 12:43:29.025619": {
+        "Username": "none",
+        "action": "FileCreation",
+        "passed": true,
+        "sussy": true,
+        "additionalInfo": "Log file was created because it wasn't found or did not exist",
+        "date": "2023-06-09 12:43:29.025619"
+    },
+    "me at 2023-06-09 12:48:15.298870": {
+        "Username": "me",
+        "action": "login",
+        "passed": true,
+        "sussy": true,
+        "additionalInfo": "",
+        "date": "2023-06-09 12:48:15.298870"
+    },
+    "me at 2023-06-09 12:48:50.539307": {
+        "Username": "me",
+        "action": "login",
+        "passed": true,
+        "sussy": true,
+        "additionalInfo": "",
+        "date": "2023-06-09 12:48:50.539307"
+    },
+    "me at 2023-06-09 12:51:18.835473": {
+        "Username": "me",
+        "action": "login",
+        "passed": true,
+        "sussy": true,
+        "additionalInfo": "",
+        "date": "2023-06-09 12:51:18.835473"
+    }
+}
