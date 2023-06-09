@@ -143,6 +143,8 @@ def modifymember():
     "Enter the corresponding number: "))
             
     if 1 <= field <= 9:
+     #
+     #TODO: check input for injection attacks
      new_value = input("Enter the new value: ")
                 
       # Update the selected field for the selected user
@@ -163,6 +165,7 @@ def modifymember():
     elif field == 8:
       memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
     elif field == 9:
+      #TODO: Password Hash call
       memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (new_value, selected_user[0]))
     members.commit()
     print("User updated successfully!")
