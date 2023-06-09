@@ -58,7 +58,7 @@ def start_trainer_menu():
     elif answer == "2":
       Validation.create_member()
     elif answer == "3":
-      Validation.create_member()
+      print("Not implemented yet")
     elif answer == "4":
       print("Not implemented yet")
     elif answer == "5":
