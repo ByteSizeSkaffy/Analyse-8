@@ -10,7 +10,6 @@ import Logging
 #creates databases if they don't exist
 super_usersdb = sqlite3.connect('super_users.db')
 super_users = super_usersdb.cursor()
-print("bepis1")
 trainersdb = sqlite3.connect('trainers.db')
 trainerdb = trainersdb.cursor()
 
