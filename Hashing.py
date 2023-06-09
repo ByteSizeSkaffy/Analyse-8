@@ -5,6 +5,7 @@ def hashPW(password):
 
     return result
 
+#returns True if input password matches the hashed password taen from the database.
 def GetPW(dbpw,password):
     #database call for the hashed password
     #passwordEncrypted=Databasing.GetUserInfo(username)
