@@ -49,11 +49,11 @@ def create_member():
   weight = input("Enter weight: ")
   address = input("Enter address: ")
   email = input("Enter email: ")
-  print(" * \n**Building Member ID**\n        *")
+  print(" *----------------\n**Building Member ID**\n    ----------------*")
   member_id = create_member_id()
   
   #hier Password Hash call
-  password = Hashing.hashPW(input("Enter password"))
+  password = Hashing.hashPW(input("Enter password: "))
   member_id = Validation.create_member_id()
 
   #TODO: check the input for injection attacks
@@ -82,9 +82,9 @@ def create_member():
     email, 
     phonenumber, 
     password))
-  memberdb.commit()
+  members.commit()
   print("Member created successfully")
-  memberdb.close()
+  members.close()
 
 
 #checks if username complies with standards laid out in the assignment
@@ -151,7 +151,6 @@ def check_password(string):
 def create_member_id():
     current_year = datetime.datetime.now().strftime("%Y")
     last_digit_year = int((datetime.datetime.now().strftime("%Y")))%10
-    print(last_digit_year)
     random_digits = [str(random.randint(0, 9)) for _ in range(7)]
     checksum = (sum(int(digit) for digit in random_digits) + last_digit_year) % 10
     member_id = current_year + ''.join(random_digits) + str(checksum)
