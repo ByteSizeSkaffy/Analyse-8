@@ -114,12 +114,7 @@ class admin:
 
         firstname = input("Enter first name: ")
         lastname = input("Enter last name: ")
-        age = input("Enter age: ")
-        phonenumber = input("Enter phone number: ")
-        gender = input("Enter gender: ")
-        weight = input("Enter weight: ")
-        address = input("Enter address: ")
-        email = input("Enter email: ")
+        username=input("Enter username")
         print(" *----------------\n**Building Member ID**\n    ----------------*")
         member_id = Validation.create_member_id()
         
@@ -130,28 +125,18 @@ class admin:
         #TODO: check the input for injection attacks
         
         supDbC.execute('''
-        INSERT INTO superdb (
+        INSERT INTO trainers (
             id, 
             firstname, 
+            username,
             Lastname, 
-            age, 
-            gender, 
-            weight, 
-            Address,
-            email,
-            phonenumber, 
             password 
             ) 
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+            VALUES(?, ?, ?, ?, ?)''', (
             member_id, 
             firstname, 
             lastname, 
-            age, 
-            gender, 
-            weight, 
-            address,
-            email, 
-            phonenumber, 
+            username,
             password))
         superdb.commit()
         print("Member created successfully")
