@@ -40,7 +40,14 @@ def AdminLogin():
     #needs to be compared to hash
         admindb.execute("SELECT * FROM super_users WHERE username = ? AND password = ?", (username, Hashing.hashPW(password)))
         result = admindb.fetchone()
-    if result:
+    if result[3]=="super_admin":
+        print("Login successful")
+        #close the connection
+        Logging.logLoginAttempt(username, True, False, additionalInfo="Admin Login")
+        admindb.close()
+        admins.close()
+        return SAdm(result[0],result[3])
+    elif result:
         print("Login successful")
         #close the connection
         Logging.logLoginAttempt(username, True, False, additionalInfo="Admin Login")
@@ -76,7 +83,7 @@ class admin:
 
 
     
-class Super(admin):
+class SAdm(admin):
 
     def CreateAdmin():
         id=Validation.create_member_id()
