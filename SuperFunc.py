@@ -156,8 +156,75 @@ class admin:
         print("Member created successfully")
         superdb.close()
     
+    def search_db(self,search_key,db):
+        conn = sqlite3.connect(f'{db}.db')
+        cursor = conn.cursor()
+
+        # Search for admins using partial keys should be sql injection safe but im not a cryptographer
+        search_pattern = '%' + search_key + '%'
+        cursor.execute(f"SELECT * FROM {db} WHERE firstname LIKE ? OR username LIKE ? OR lastname LIKE ? OR id LIKE ?",
+                    (search_pattern, search_pattern, search_pattern, search_pattern))
+        results = cursor.fetchall()
+
+
+        # Display the search results
+        if results:
+            print("Search Results:")
+            i=1
+            for row in results:
+                print(f"row: [{i}] ID: {row[0]}, First Name: {row[1]}, Last Name: {row[2]}")
+                i+=1
+            
+            # Close the connection    
+            cursor.close()
+            conn.close()
+            return results
+        else:
+            print("No matching Users found.")
+
+            # Close the connection
+            cursor.close()
+            conn.close()
+            return False
+
     def ModifyTrainer(self):
-        raise NotImplemented
+        super_user = sqlite3.connect('trainer.db')
+        cursordb = super_user.cursor()
+        results = self.search_db(input("Please enter which user you'd like to alter:"),"super_user")
+            
+        if results:
+                row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
+                
+                if 1 <= row <= len(results):
+                    selected_user = results[row - 1]
+                        
+                    print("Selected User:")
+                        
+                field = int(input("Which field would you like to modify?\n"
+                "[1] First Name\n"
+                "[2] Last Name\n"
+                "[3] Password\n"
+                "Enter the corresponding number: "))
+                        
+                if 1 <= field <= 3:
+                #
+                #TODO: check input for injection attacks
+                    new_value = input("Enter the new value: ")
+                            
+                # Update the selected field for the selected user
+                if field == 1:
+                    cursordb.execute("UPDATE trainers SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
+                elif field == 2:
+                    cursordb.execute("UPDATE trainers SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
+                elif field == 3:
+                #TODO: Password Hash call
+                    cursordb.execute("UPDATE trainers SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+                super_user.commit()
+                print("User updated successfully!")
+        else:
+                print("Invalid field number. Please try again.")
+        super_user.close()
+        
     
     def deleteTrainer(self):
         raise NotImplemented
@@ -169,7 +236,43 @@ class admin:
         raise NotImplemented
     
     def modifyAdmin(self):
-        raise NotImplemented
+        super_user = sqlite3.connect('super_user.db')
+        cursordb = super_user.cursor()
+        results = self.search_db(input("Please enter which user you'd like to alter:"),"super_user")
+            
+        if results:
+                row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
+                
+                if 1 <= row <= len(results):
+                    selected_user = results[row - 1]
+                        
+                    print("Selected User:")
+                        
+                field = int(input("Which field would you like to modify?\n"
+                "[1] First Name\n"
+                "[2] Last Name\n"
+                "[3] Password\n"
+                "Enter the corresponding number: "))
+                        
+                if 1 <= field <= 3:
+                #
+                #TODO: check input for injection attacks
+                    new_value = input("Enter the new value: ")
+                            
+                # Update the selected field for the selected user
+                if field == 1:
+                    cursordb.execute("UPDATE super_user SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
+                elif field == 2:
+                    cursordb.execute("UPDATE super_user SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
+                elif field == 3:
+                #TODO: Password Hash call
+                    cursordb.execute("UPDATE super_user SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+                super_user.commit()
+                print("User updated successfully!")
+        else:
+                print("Invalid field number. Please try again.")
+        super_user.close()
+        
 
     def checkUserList(self):
         trainerDB= sqlite3.connect('trainers.db')
