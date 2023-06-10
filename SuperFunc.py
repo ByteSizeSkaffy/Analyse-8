@@ -106,7 +106,53 @@ class admin:
     #delete trainer
     #Reset trainer password
     def createTrainer(self):
-        raise NotImplemented
+        superdb = sqlite3.connect('super_users.db')
+        supDbC = superdb.cursor()
+
+        firstname = input("Enter first name: ")
+        lastname = input("Enter last name: ")
+        age = input("Enter age: ")
+        phonenumber = input("Enter phone number: ")
+        gender = input("Enter gender: ")
+        weight = input("Enter weight: ")
+        address = input("Enter address: ")
+        email = input("Enter email: ")
+        print(" *----------------\n**Building Member ID**\n    ----------------*")
+        member_id = Validation.create_member_id()
+        
+        #hier Password Hash call
+        password = Hashing.hashPW(input("Enter password: "))
+        
+
+        #TODO: check the input for injection attacks
+        
+        supDbC.execute('''
+        INSERT INTO superdb (
+            id, 
+            firstname, 
+            Lastname, 
+            age, 
+            gender, 
+            weight, 
+            Address,
+            email,
+            phonenumber, 
+            password 
+            ) 
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+            member_id, 
+            firstname, 
+            lastname, 
+            age, 
+            gender, 
+            weight, 
+            address,
+            email, 
+            phonenumber, 
+            password))
+        superdb.commit()
+        print("Member created successfully")
+        superdb.close()
     
     def ModifyTrainer(self):
         raise NotImplemented
