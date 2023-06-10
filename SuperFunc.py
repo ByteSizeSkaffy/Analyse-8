@@ -22,10 +22,39 @@ def AdminMenuing():
         elif LoggedInAdmin!=False:
             break
     print(f"Welcome{LoggedInAdmin.name}, What would you like to do?")
-    print("1. update your password\n 2. check user list\n 3. add new trainer to system\n 4. modify or delete a Trainer account\n 5. Manage Backups")
-    userInput=int(input("7. see the logs\n add a member to the system\n 9. modify a member's information\n 10. Delete a member\n 11. seach and retrieve member information"+
+    print("1. update your password\n 2. check user list\n 3. add new trainer to system\n 4. modify a Trainer account\n 5. Delete a Trainer account\n 6. Manage Backups")
+    userInput=int(input("7. see the logs\n 8. add a member to the system\n 9. modify a member's information\n 10. Delete a member\n 11. seach and retrieve member information"+
                         ("12. add new Admin to the system\n 13. modify or delete admin account\n 14. reset admin password" if type(LoggedInAdmin)==SAdm else "")))
-    Validation.validateMenuInput(userInput, 7)
+    Validation.validateMenuInput(userInput, 14 if type(LoggedInAdmin)==SAdm else 11)
+    if userInput==1:
+        LoggedInAdmin.ChangeAdminPassword(LoggedInAdmin.ID)
+    elif userInput==2:
+        LoggedInAdmin.checkUserList()
+    elif userInput==3:
+        LoggedInAdmin.createTrainer()
+    elif userInput==4:
+        LoggedInAdmin.ModifyTrainer()
+    elif userInput==5:
+        LoggedInAdmin.deleteTrainer()
+    elif userInput==6:
+        LoggedInAdmin.manageBackups()
+    elif userInput==7:
+        Logging.readLogs()
+    elif userInput==8:
+        Validation.create_member()
+    elif userInput==9:
+        Validation.modifymember()
+    elif userInput==10:
+        LoggedInAdmin.deleteMember()
+    elif userInput==11:
+        Validation.search_member(input("Enter the member's name: "))
+    elif userInput==12 and type(LoggedInAdmin)==SAdm:
+        LoggedInAdmin.CreateAdmin()
+    elif userInput==13 and type(LoggedInAdmin)==SAdm:
+        pass
+    elif userInput==14 and type(LoggedInAdmin)==SAdm:
+        pass
+
     
 
 
@@ -76,10 +105,53 @@ class admin:
     #modify trainer
     #delete trainer
     #Reset trainer password
+    def createTrainer(self):
+        raise NotImplemented
+    
+    def ModifyTrainer(self):
+        raise NotImplemented
+    
+    def deleteTrainer(self):
+        raise NotImplemented
 
+    def manageBackups(self):
+        raise NotImplemented
+    
+    def deleteMember(self):
+        raise NotImplemented
 
+    def checkUserList(self):
+        trainerDB= sqlite3.connect('trainers.db')
+        superDB= sqlite3.connect('super_users.db')
+        train=trainerDB.cursor()
+        soup=superDB.cursor()
+        print("Listing Trainers: ")
+        res=train.execute("SELECT * FROM trainers")
+        stuff=res.fetchall()
+        for item in stuff:
+            print(f"name: {item[1]}, Role: Trainer, username: {item[3]}, Last name: {item[2]}")
+        
+        print("Listing Admins: ")
+        res=soup.execute("SELECT * FROM super_users")
+        stuff=res.fetchall()
+        for item in stuff:
+            print (f"name: {item[1]}, Role: You (Super admin), username: {item[3]}, Last name: {item[2]}") if item[3]=="super_admin" else f"name: {item[1]}, Role: Admin, username: {item[3]}, Last name: {item[2]}"
+            
 
-    def readLogs():
+    def ChangeAdminPassword(self,ID):
+        trainers = sqlite3.connect('super_users.db')
+        trainerdb = trainers.cursor()
+        print("Changing your password")
+        #TODO: make sure the password is strong enough
+        password = input("Enter your new password: ")
+        #TOdo: hash the password
+        trainerdb.execute("UPDATE super_users SET password = ? WHERE id = ?", (Hashing.hashPW(password), ID))
+        trainers.commit()
+        print("Password changed successfully")
+        trainerdb.close()
+        trainers.close()
+
+    def readLogs(self):
         with open('logs.json', 'r') as file:
             data=json.load(file)
             for item in data:
@@ -113,20 +185,3 @@ class SAdm(admin):
                             (infoObject["id"], infoObject["firstname"], infoObject["lastname"], infoObject["username"], infoObject["Hpassword"], infoObject["registrationdate"]))
         super_usersdb.commit()
         super_usersdb.close
-    
-    def checkUserList():
-        trainerDB= sqlite3.connect('trainers.db')
-        superDB= sqlite3.connect('super_users.db')
-        train=trainerDB.cursor()
-        soup=superDB.cursor()
-        print("Listing Trainers: ")
-        res=train.execute("SELECT * FROM trainers")
-        stuff=res.fetchall()
-        for item in stuff:
-            print(item)
-        
-        print("Listing Trainers: ")
-        res=soup.execute("SELECT * FROM super_users")
-        stuff=res.fetchall()
-        for item in stuff:
-            print(item)
