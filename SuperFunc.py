@@ -218,7 +218,7 @@ class admin:
                     cursordb.execute("UPDATE trainers SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
                 elif field == 3:
                 #TODO: Password Hash call
-                    cursordb.execute("UPDATE trainers SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+                    cursordb.execute("UPDATE trainers SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
                 super_user.commit()
                 print("User updated successfully!")
         else:
@@ -234,45 +234,6 @@ class admin:
     
     def deleteMember(self):
         raise NotImplemented
-    
-    def modifyAdmin(self):
-        super_user = sqlite3.connect('super_user.db')
-        cursordb = super_user.cursor()
-        results = self.search_db(input("Please enter which user you'd like to alter:"),"super_user")
-            
-        if results:
-                row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
-                
-                if 1 <= row <= len(results):
-                    selected_user = results[row - 1]
-                        
-                    print("Selected User:")
-                        
-                field = int(input("Which field would you like to modify?\n"
-                "[1] First Name\n"
-                "[2] Last Name\n"
-                "[3] Password\n"
-                "Enter the corresponding number: "))
-                        
-                if 1 <= field <= 3:
-                #
-                #TODO: check input for injection attacks
-                    new_value = input("Enter the new value: ")
-                            
-                # Update the selected field for the selected user
-                if field == 1:
-                    cursordb.execute("UPDATE super_user SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 2:
-                    cursordb.execute("UPDATE super_user SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
-                elif field == 3:
-                #TODO: Password Hash call
-                    cursordb.execute("UPDATE super_user SET password = ? WHERE id = ?", (new_value, selected_user[0]))
-                super_user.commit()
-                print("User updated successfully!")
-        else:
-                print("Invalid field number. Please try again.")
-        super_user.close()
-        
 
     def checkUserList(self):
         trainerDB= sqlite3.connect('trainers.db')
@@ -345,7 +306,7 @@ class SAdm(admin):
                     cursordb.execute("UPDATE super_user SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
                 elif field == 3:
                 #TODO: Password Hash call
-                    cursordb.execute("UPDATE super_user SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+                    cursordb.execute("UPDATE super_user SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
                 super_user.commit()
                 print("User updated successfully!")
         else:
@@ -366,7 +327,7 @@ class SAdm(admin):
             "Hpassword": password,
             "registrationdate":str(datetime.datetime.now())
         }
-        self.InsertAdmin()
+        self.InsertAdmin(infoObject)
 
     def InsertAdmin(self,infoObject):
         Logging.logInsert(infoObject,self)
