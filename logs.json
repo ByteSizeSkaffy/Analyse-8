@@ -190,5 +190,13 @@
         "sussy": false,
         "additionalInfo": "Admin Login",
         "date": "2023-06-10 15:51:58.013063"
+    },
+    "super_admin at 2023-06-10 15:54:58.777718": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-10 15:54:58.777718"
     }
 }

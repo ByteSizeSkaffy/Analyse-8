@@ -28,7 +28,7 @@ def logInsert(infoObject,admin):
     action="Created new Admin account"
     logObject={
         "action":action,
-        "Username":admin.username,
+        "Username":admin.name,
         "passed":True,
         'sussy':False,
         'additionalInfo':"Username of created account: "+ infoObject["username"],
