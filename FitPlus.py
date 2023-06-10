@@ -52,15 +52,12 @@ while True:
   print("1. log in as a trainer")
   print("2. Log in as Admin")
 
-  userinput = input("Enter your choice: ")
-  if not Validation.validateMenuInput(userinput,"3"):
-      print("Please input either 1 or 2")
-  else:
-      if str(userinput)=="1":
-        Trainer.login_trainer()
-        break
-      elif str(userinput)=="2":
-        SuperFunc.AdminMenuing()
-        break
-      
-    
+print("1. Add a member")
+print("2. log in as a trainer")
+
+
+userinput = input("Enter your choice: ")
+if(userinput == "1"):
+    Validation.create_member()
+elif(userinput == "2"):
+    Trainer.start_trainer_menu()

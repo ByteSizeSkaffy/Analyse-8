@@ -25,7 +25,7 @@ def login_trainer():
     Logging.logLoginAttempt(username, True, False, additionalInfo="Trainer Login")
     trainerdb.close()
     trainers.close()
-    return True
+    return result
   else:
     print("Login unsuccessful")
     #close the connection
@@ -47,7 +47,6 @@ def ChangeTrainerPassword(trainer):
   print("Password changed successfully")
   trainerdb.close()
   trainers.close()
-
 
 def start_trainer_menu():
   #lets see if you are who you say you are
@@ -84,6 +83,8 @@ def start_trainer_menu():
     elif answer == "5":
       print("Logging out")
       trainerloggedin = False
+      
+
     
 
   

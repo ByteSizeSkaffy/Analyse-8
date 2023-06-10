@@ -13,15 +13,18 @@ def search_member(search_key):
   cursor = conn.cursor()
 
   # Search for members using partial keys should be sql injection safe but im not a cryptographer
-  cursor.execute("SELECT * FROM members WHERE name LIKE ? OR address LIKE ? OR email LIKE ? OR phone LIKE ? OR member_id LIKE ?",
-               ('%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%', '%' + search_key + '%' + '%' + search_key + '%'))
+  search_pattern = '%' + search_key + '%'
+  cursor.execute("SELECT * FROM members WHERE firstname LIKE ? OR address LIKE ? OR email LIKE ? OR id LIKE ? OR lastname LIKE ?",
+               (search_pattern, search_pattern, search_pattern, search_pattern, search_pattern))
   results = cursor.fetchall()
+
 
   # Display the search results
   if results:
     print("Search Results:")
+    i=1
     for row in results:
-      print(f"Member ID: {row[0]}, Name: {row[1]}, Address: {row[3]}, Email: {row[4]}, Phone: {row[5]}")
+      print(f"row: [{i}] Member ID: {row[0]}, First Name: {row[1]}, Last Name: {row[2]}, Email: {row[7]}, Age: {row[3]}, gender: {row[4]}, Weight: {row[5]} Address: {row[6]}, Phone number:{row[8]}")
       
     # Close the connection    
     cursor.close()
@@ -40,47 +43,50 @@ def create_member():
   members = sqlite3.connect('members.db')
   memberdb = members.cursor()
 
-  firstname = input("Enter  first name: ")
-  lastname = input("Enter  last name: ")
-  age = input("Enter  age: ")
-  phonenumber = input("Enter  phone number: ")
-  gender = input("Enter  gender:")
-  weight = input("Enter  weight: ")
-  address = input("Enter  address: ")
-  email = input("Enter  email: ")
+  firstname = input("Enter first name: ")
+  lastname = input("Enter last name: ")
+  age = input("Enter age: ")
+  phonenumber = input("Enter phone number: ")
+  gender = input("Enter gender: ")
+  weight = input("Enter weight: ")
+  address = input("Enter address: ")
+  email = input("Enter email: ")
+  print(" *----------------\n**Building Member ID**\n    ----------------*")
+  member_id = create_member_id()
+  
   #hier Password Hash call
-  password = Hashing.hashPW(input("Enter password"))
+  password = Hashing.hashPW(input("Enter password: "))
   member_id = Validation.create_member_id()
 
-  
+  #TODO: check the input for injection attacks
   
   memberdb.execute('''
   INSERT INTO members (
-    id INTEGER PRIMARY KEY, 
-    firstname TEXT, 
-    Last name TEXT, 
-    age INTEGER, 
-    gender TEXT, 
-    weight INTEGER, 
-    Address TEXT,
-    email TEXT,
-    phonenumber INTEGER, 
-    password TEXT 
+    id, 
+    firstname, 
+    Lastname, 
+    age, 
+    gender, 
+    weight, 
+    Address,
+    email,
+    phonenumber, 
+    password 
     ) 
-    VALUES (
-      member_id, 
-      firstname, 
-      lastname, 
-      age, 
-      gender, 
-      weight, 
-      address,
-      email, 
-      phonenumber, 
-      password
-      ) ''')
-  memberdb.commit()
-  memberdb.close()
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+    member_id, 
+    firstname, 
+    lastname, 
+    age, 
+    gender, 
+    weight, 
+    address,
+    email, 
+    phonenumber, 
+    password))
+  members.commit()
+  print("Member created successfully")
+  members.close()
 
 
 #checks if username complies with standards laid out in the assignment
@@ -112,16 +118,68 @@ def check_username(string):
         unique_set.add(char)
     return True
 
-def modifymember():
-   members = sqlite3.connect('members.db')
-   memberdb = members.cursor()
-   results = search_member(input("please enter which user you'd like to alter:"))
-
 def validateMenuInput(user, max):
     try:
       return True if int(user)<int(max) else False
     except:
       return False
+
+def modifymember():
+  members = sqlite3.connect('members.db')
+  memberdb = members.cursor()
+  results = search_member(input("Please enter which user you'd like to alter:"))
+    
+  if results:
+    row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
+       
+    if 1 <= row <= len(results):
+      selected_user = results[row - 1]
+            
+      print("Selected User:")
+            
+    field = int(input("Which field would you like to modify?\n"
+    "[1] First Name\n"
+    "[2] Last Name\n"
+    "[3] Age\n"
+    "[4] Phone Number\n"
+    "[5] Gender\n"
+    "[6] Weight\n"
+    "[7] Address\n"
+    "[8] Email\n"
+    "[9] Password\n"
+    "Enter the corresponding number: "))
+            
+    if 1 <= field <= 9:
+     #
+     #TODO: check input for injection attacks
+     new_value = input("Enter the new value: ")
+                
+      # Update the selected field for the selected user
+    if field == 1:
+      memberdb.execute("UPDATE members SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 2:
+      memberdb.execute("UPDATE members SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 3:
+      memberdb.execute("UPDATE members SET age = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 4:
+      memberdb.execute("UPDATE members SET phonenumber = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 5:
+      memberdb.execute("UPDATE members SET gender = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 6:
+      memberdb.execute("UPDATE members SET weight = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 7:
+      memberdb.execute("UPDATE members SET Address = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 8:
+      memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
+    elif field == 9:
+      #TODO: Password Hash call
+      memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+    members.commit()
+    print("User updated successfully!")
+  else:
+      print("Invalid field number. Please try again.")
+  members.close()
+
 
 
 def check_password(string):
@@ -151,7 +209,6 @@ def check_password(string):
 def create_member_id():
     current_year = datetime.datetime.now().strftime("%Y")
     last_digit_year = int((datetime.datetime.now().strftime("%Y")))%10
-    print(last_digit_year)
     random_digits = [str(random.randint(0, 9)) for _ in range(7)]
     checksum = (sum(int(digit) for digit in random_digits) + last_digit_year) % 10
     member_id = current_year + ''.join(random_digits) + str(checksum)
