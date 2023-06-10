@@ -62,7 +62,3 @@ def readLogs():
         data=json.load(file)
         for item in data:
             print(f'{data[item]["Username"]} performed action: {data[item]["action"]} on {data[item]["date"]}, which was ' +( "Successful" if data[item]["passed"] else "unsuccessful")+("| Warning! possible suspicious activity" if data[item]["sussy"] else "")+". Additional info: " + (data[item]["additionalInfo"] if data[item]["additionalInfo"] != "" else "none"))
-
-logLoginAttempt("me",True,True,"login")
-
-readLogs()

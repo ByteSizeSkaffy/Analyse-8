@@ -4,6 +4,7 @@ import random
 import Validation
 import sqlite3
 import Hashing
+import Logging
 #search user
 def search_member(search_key):
 
@@ -116,7 +117,11 @@ def modifymember():
    memberdb = members.cursor()
    results = search_member(input("please enter which user you'd like to alter:"))
 
-
+def validateMenuInput(user, max):
+    try:
+      return True if int(user)<int(max) else False
+    except:
+      return False
 
 
 def check_password(string):
