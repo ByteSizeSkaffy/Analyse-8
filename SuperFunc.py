@@ -22,7 +22,10 @@ def AdminMenuing():
         elif LoggedInAdmin!=False:
             break
     print(f"Welcome{LoggedInAdmin.name}, What would you like to do?")
-    userInput=input("")
+    print("1. update your password\n 2. check user list\n 3. add new trainer to system\n 4. modify or delete a Trainer account\n 5. Manage Backups")
+    userInput=int(input("7. see the logs\n add a member to the system\n 9. modify a member's information\n 10. Delete a member\n 11. seach and retrieve member information"+
+                        ("12. add new Admin to the system\n 13. modify or delete admin account\n 14. reset admin password" if type(LoggedInAdmin)==SAdm else "")))
+    Validation.validateMenuInput(userInput, 7)
     
 
 
@@ -75,6 +78,7 @@ class admin:
     #Reset trainer password
 
 
+
     def readLogs():
         with open('logs.json', 'r') as file:
             data=json.load(file)
@@ -85,17 +89,44 @@ class admin:
     
 class SAdm(admin):
 
-    def CreateAdmin():
-        id=Validation.create_member_id()
+    def CreateAdmin(self):
         print("This will create an admin user")
         firstname=input("Input First name of user: ")
         lastname=input("Input last Name of user: ")
         username=input("input Username: ")
         password=Hashing.hashPW(input("Input user password"))
+        infoObject={
+            "id": Validation.create_member_id(),
+            "firstname": firstname,
+            "lastname": lastname,
+            "username": username,
+            "Hpassword": password,
+            "registrationdate":str(datetime.datetime.now())
+        }
+        self.InsertAdmin()
 
-    def InsertAdmin(infoObject):
-        regDate=str(datetime.datetime.now())
+    def InsertAdmin(self,infoObject):
+        Logging.logInsert(infoObject,self)
         super_usersdb = sqlite3.connect('super_users.db')
         super_users=super_usersdb.cursor()
         super_users.execute("INSERT INTO super_users (id, firstname, lastname, username, password, registrationdate) VALUES (?, ?, ?, ?, ?, ?)", 
-                            (infoObject["id"], infoObject["firstname"], infoObject["lastname"], infoObject["username"], infoObject["Hpassword"], '21/9/2023'))
+                            (infoObject["id"], infoObject["firstname"], infoObject["lastname"], infoObject["username"], infoObject["Hpassword"], infoObject["registrationdate"]))
+        super_usersdb.commit()
+        super_usersdb.close
+    
+    def checkUserList():
+        trainerDB= sqlite3.connect('trainers.db')
+        superDB= sqlite3.connect('super_users.db')
+        train=trainerDB.cursor()
+        soup=superDB.cursor()
+        print("Listing Trainers: ")
+        res=train.execute("SELECT * FROM trainers")
+        stuff=res.fetchall()
+        for item in stuff:
+            print(item)
+        
+        print("Listing Trainers: ")
+        res=soup.execute("SELECT * FROM super_users")
+        stuff=res.fetchall()
+        for item in stuff:
+            print(item)

@@ -24,6 +24,17 @@ def FileExistsCheck():
             }
             file.write(json.dumps(addObject))
 
+def logInsert(infoObject,admin):
+    action="Created new Admin account"
+    logObject={
+        "action":action,
+        "Username":admin.username,
+        "passed":True,
+        'sussy':False,
+        'additionalInfo':"Username of created account: "+ infoObject["username"],
+        "date":str(datetime.datetime.now())
+    }
+    logGeneric(infoObject)
 
 def logLoginAttempt(Username, passed, sussy, additionalInfo=""):
     action="login"
@@ -37,6 +48,16 @@ def logLoginAttempt(Username, passed, sussy, additionalInfo=""):
 
     }
     logGeneric(logObject)
+
+def LogWarning():
+    logGeneric({
+        "action":"Admin Login",
+        "Username":"A user",
+        "passed":False,
+        'sussy':True,
+        'additionalInfo':"Login Failed Three times. Exiting.",
+        "date":str(datetime.datetime.now())
+    })
 
 def logGeneric(logObject):
     FileExistsCheck()
