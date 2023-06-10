@@ -120,7 +120,7 @@ def check_username(string):
 
 def validateMenuInput(user, max):
     try:
-      return True if int(user)<int(max) else False
+      return True if int(user)<=int(max) else False
     except:
       return False
 
