@@ -166,5 +166,29 @@
         "sussy": false,
         "additionalInfo": "Admin Login",
         "date": "2023-06-10 15:34:22.630128"
+    },
+    "super_admin at 2023-06-10 15:45:41.014448": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-10 15:45:41.014448"
+    },
+    "super_admin at 2023-06-10 15:49:36.812882": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-10 15:49:36.812882"
+    },
+    "super_admin at 2023-06-10 15:51:58.013063": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-10 15:51:58.013063"
     }
 }
