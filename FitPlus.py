@@ -52,12 +52,10 @@ while True:
   print("1. log in as a trainer")
   print("2. Log in as Admin")
 
-print("1. Add a member")
-print("2. log in as a trainer")
-
-
-userinput = input("Enter your choice: ")
-if(userinput == "1"):
-    Validation.create_member()
-elif(userinput == "2"):
-    Trainer.start_trainer_menu()
+  userinput = input("Enter your choice: ")
+  if not Validation.validateMenuInput(userinput,2):
+      print("Please enter a valid number")
+  elif(userinput == "1"):
+      Trainer.start_trainer_menu()
+  elif(userinput == "2"):
+      SuperFunc.AdminMenuing()
