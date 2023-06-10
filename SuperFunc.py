@@ -22,12 +22,13 @@ def AdminMenuing():
         elif LoggedInAdmin!=False:
             break
     while True:
-        print(f"Welcome{LoggedInAdmin.name}, What would you like to do?")
+        print(f"Welcome, {LoggedInAdmin.name}, What would you like to do?")
         print("pick an option by typing a number and pressing ENTER")
-        print("1. update your password\n 2. check user list\n 3. add new trainer to system\n 4. modify a Trainer account\n 5. Delete a Trainer account\n 6. Manage Backups")
-        userInput=int(input("7. see the logs\n 8. add a member to the system\n 9. modify a member's information\n 10. Delete a member\n 11. seach and retrieve member information"+
-                            ("12. add new Admin to the system\n 13. modify or delete admin account\n 14. reset admin password" if type(LoggedInAdmin)==SAdm else "")))
+        print(" 1. update your password\n 2. check user list\n 3. add new trainer to system\n 4. modify a Trainer account\n 5. Delete a Trainer account\n 6. Manage Backups")
+        userInput=input(" 7. see the logs\n 8. add a member to the system\n 9. modify a member's information\n 10. Delete a member\n 11. seach and retrieve member information"+
+                            ("12. add new Admin to the system\n 13. modify or delete admin account\n 14. reset admin password\n\n" if type(LoggedInAdmin)==SAdm else ""))
         Validation.validateMenuInput(userInput, 14 if type(LoggedInAdmin)==SAdm else 11)
+        userInput=int(userInput)
         if userInput==1:
             LoggedInAdmin.ChangeAdminPassword(LoggedInAdmin.ID)
         elif userInput==2:
@@ -80,7 +81,7 @@ def AdminLogin():
         Logging.logLoginAttempt(username, True, False, additionalInfo="Admin Login")
         admindb.close()
         admins.close()
-        return SAdm(result[0],result[3])
+        return SAdm(result[3],result[0])
     elif result:
         print("Login successful")
         #close the connection
@@ -108,7 +109,7 @@ class admin:
     #delete trainer
     #Reset trainer password
     def createTrainer(self):
-        superdb = sqlite3.connect('super_users.db')
+        superdb = sqlite3.connect('trainers.db')
         supDbC = superdb.cursor()
 
         firstname = input("Enter first name: ")
