@@ -198,5 +198,77 @@
         "sussy": false,
         "additionalInfo": "Admin Login",
         "date": "2023-06-10 15:54:58.777718"
+    },
+    "super_admin at 2023-06-11 14:35:00.133324": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:35:00.133324"
+    },
+    "super_admin at 2023-06-11 14:37:56.902842": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:37:56.902842"
+    },
+    "super_admin at 2023-06-11 14:40:19.790910": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:40:19.790910"
+    },
+    "super_admin at 2023-06-11 14:42:09.051677": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:42:09.051677"
+    },
+    "super_admin at 2023-06-11 14:44:32.969905": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:44:32.969905"
+    },
+    "super_admin at 2023-06-11 14:50:17.590150": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:50:17.590150"
+    },
+    "super_admin at 2023-06-11 14:51:24.586472": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:51:24.586472"
+    },
+    "super_admin at 2023-06-11 14:55:33.730990": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:55:33.730990"
+    },
+    "super_admin at 2023-06-11 14:57:59.617471": {
+        "Username": "super_admin",
+        "action": "login",
+        "passed": true,
+        "sussy": false,
+        "additionalInfo": "Admin Login",
+        "date": "2023-06-11 14:57:59.617471"
     }
 }

@@ -4,6 +4,8 @@ import Validation
 import Hashing
 import Logging
 import json
+import os
+import shutil
 #infoObject properties: 
 #id, firstname, lastname, username, Hpassword(hashed)
 def AdminMenuing():
@@ -228,7 +230,36 @@ class admin:
         super_user.close()
         
     def manageBackups(self):
-        raise NotImplemented
+        while True:
+            print("What would you like to do:")
+            userInput=input("1. Make system backup\n 2. restore system backup\n")
+            if Validation.validateMenuInput(userInput,2):
+                if userInput=="1":
+                    print("Making Backup of system files...")
+                    date=str(datetime.datetime.now())
+                    date=date.replace(":", "_")
+                    date=date.replace(" ","_")
+                    try:
+                        shutil.copy("./super_users.db",f"./Backups/{date}/super_users.db")
+                        shutil.copy("./trainer.db",f"./Backups/{date}/trainer.db")
+                        shutil.copy("./members.db",f"./Backups/{date}/members.db")
+                    except:
+                        os.makedirs(f"./Backups/{date}/")
+                        shutil.copy("./super_users.db",f"./Backups/{date}/super_users.db")
+                        shutil.copy("./trainer.db",f"./Backups/{date}/trainer.db")
+                        shutil.copy("./members.db",f"./Backups/{date}/members.db")
+                elif userInput=="2":
+                    backups=os.listdir("./Backups/")
+                    for item in backups:
+                        print(f"{backups.index(item)+1}. Backup made at: {item}")
+                    choiche=input("Which backup would you like to restore? enter the number of the backup and press ENTER\n ")
+                    if Validation.validateMenuInput(choiche,len(backups)):
+                        for file in os.listdir(f"./Backups/{backups[int(choiche)-1]}"):
+                            shutil.copy(f"./Backups/{backups[int(choiche)-1]}/{file}",f"./{file}")
+                else:
+                    print("Please input a valid number.")
+            else:
+                print("Please input a valid number.")
     
     def deleteMember(self):
         members = sqlite3.connect('members.db')
