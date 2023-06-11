@@ -73,7 +73,7 @@ def start_trainer_menu():
   while(trainerloggedin):
     print("[1] search a member (retrieve member info)")
     print("[2] add a member")
-    print("[3] update/modify a member")
+    print("[3] modify/delete a member")
     print("[4] alter your own password")
     print("[5] logout")
     answer = input()

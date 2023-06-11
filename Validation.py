@@ -153,6 +153,8 @@ def modifymember():
     "[7] Address\n"
     "[8] Email\n"
     "[9] Password\n"
+    "[10] Delete member\n"
+    "[11] Return to main menu\n]"
     "Enter the corresponding number: "))
             
     if 1 <= field <= 9:
@@ -184,6 +186,14 @@ def modifymember():
         return
       #TODO: Password Hash call
       memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
+    elif field == 10:
+      if(input("Are you Sure? \n     [Y/N]") == "N" ):
+         print("Returning back to main menu")
+         return
+      memberdb.execute("DELETE FROM members WHERE id = ?", (selected_user[0],))
+      print("User deleted successfully!")
+    elif field == 11:
+       return
     members.commit()
     print("User updated successfully!")
   else:
