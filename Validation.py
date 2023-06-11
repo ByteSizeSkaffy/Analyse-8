@@ -141,7 +141,7 @@ def modifymember():
     if 1 <= row <= len(results):
       selected_user = results[row - 1]
             
-      print("Selected User:")
+      print("Selected User")
             
     field = int(input("Which field would you like to modify?\n"
     "[1] First Name\n"
@@ -165,20 +165,28 @@ def modifymember():
       # Update the selected field for the selected user
     if field == 1:
       memberdb.execute("UPDATE members SET firstname = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 2:
       memberdb.execute("UPDATE members SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 3:
       memberdb.execute("UPDATE members SET age = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 4:
       memberdb.execute("UPDATE members SET phonenumber = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 5:
       memberdb.execute("UPDATE members SET gender = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 6:
       memberdb.execute("UPDATE members SET weight = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 7:
       memberdb.execute("UPDATE members SET Address = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 8:
       memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
+
     elif field == 9:
       #check password:
       if(not check_password(new_value)):
@@ -192,6 +200,7 @@ def modifymember():
          return
       memberdb.execute("DELETE FROM members WHERE id = ?", (selected_user[0],))
       print("User deleted successfully!")
+
     elif field == 11:
        return
     members.commit()

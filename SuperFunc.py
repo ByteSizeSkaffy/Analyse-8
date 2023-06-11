@@ -172,6 +172,21 @@ class admin:
             cursor.close()
             conn.close()
             return False
+    
+    def DeleteTrainer(self):
+        super_user = sqlite3.connect('trainers.db')
+        cursordb = super_user.cursor()
+        results = self.search_db(input("Please enter which user you'd like to delete:"),"trainers")
+        if results:
+            row = int(input("Which user would you like to delete? \nPlease enter the number of the row they're in: "))
+            if 1 <= row <= len(results):
+                selected_user = results[row - 1]
+            if(input("Are you sure? \n [Y/N]: ").lower() == "y"):
+                cursordb.execute("DELETE FROM trainers WHERE id = ?", (selected_user[0],))
+                super_user.commit()
+                print("User deleted successfully")
+                return
+        print("We couldn't find that user, please try again.")
 
     def ModifyTrainer(self):
         super_user = sqlite3.connect('trainers.db')
@@ -205,6 +220,7 @@ class admin:
                 elif field == 3:
                 #TODO: Password Hash call
                     cursordb.execute("UPDATE trainers SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
+                    
                 super_user.commit()
                 print("User updated successfully!")
         else:
