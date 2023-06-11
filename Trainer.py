@@ -39,10 +39,15 @@ def ChangeTrainerPassword(trainer):
   trainers = sqlite3.connect('trainers.db')
   trainerdb = trainers.cursor()
   print("Changing password for trainer: " + str(trainer[0]))
-  #TODO: make sure the password is strong enough
+  #DONE: make sure the password is strong enough
   password = input("Enter your new password: ")
-  #TOdo: hash the password
-  trainerdb.execute("UPDATE trainers SET password = ? WHERE id = ?", (password, trainer[0]))
+  if(not Validation.check_password(password)):
+    print("Password not strong enough")
+    return
+  
+  #TODO: hash the password
+  Hashcoin = Hashing.hashPW(password)
+  trainerdb.execute("UPDATE trainers SET password = ? WHERE id = ?", (Hashcoin, trainer[0]))
   trainers.commit()
   print("Password changed successfully")
   trainerdb.close()

@@ -55,7 +55,12 @@ def create_member():
   member_id = create_member_id()
   
   #hier Password Hash call
-  password = Hashing.hashPW(input("Enter password: "))
+  badpassword = not check_password(input("Enter password: "))
+  if badpassword:
+    print("Password not strong enough")
+    return
+  verified = badpassword
+  password = Hashing.hashPW(verified)
   member_id = Validation.create_member_id()
 
   #TODO: check the input for injection attacks
@@ -85,6 +90,7 @@ def create_member():
     phonenumber, 
     password))
   members.commit()
+
   print("Member created successfully")
   members.close()
 
@@ -172,8 +178,12 @@ def modifymember():
     elif field == 8:
       memberdb.execute("UPDATE members SET email = ? WHERE id = ?", (new_value, selected_user[0]))
     elif field == 9:
+      #check password:
+      if(not check_password(new_value)):
+        print("Password not strong enough")
+        return
       #TODO: Password Hash call
-      memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (new_value, selected_user[0]))
+      memberdb.execute("UPDATE members SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
     members.commit()
     print("User updated successfully!")
   else:
