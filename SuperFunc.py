@@ -173,7 +173,7 @@ class admin:
             conn.close()
             return False
     
-    def DeleteTrainer(self):
+    def deleteTrainer(self):
         super_user = sqlite3.connect('trainers.db')
         cursordb = super_user.cursor()
         results = self.search_db(input("Please enter which user you'd like to delete:"),"trainers")
@@ -227,15 +227,26 @@ class admin:
                 print("Invalid field number. Please try again.")
         super_user.close()
         
-    
-    def deleteTrainer(self):
-        raise NotImplemented
-
     def manageBackups(self):
         raise NotImplemented
     
     def deleteMember(self):
-        raise NotImplemented
+        members = sqlite3.connect('members.db')
+        memberdb = members.cursor()
+        results = Validation.search_member(input("Please enter which user you'd like to delete:"))
+    
+        if results:
+            row = int(input("Which user would you like to alter? \nPlease enter the number of the row they're in: "))
+       
+        if 1 <= row <= len(results):
+            selected_user = results[row - 1]
+        if (input("Are you sure? \n [Y/N]: ").lower()):
+            memberdb.execute("DELETE FROM members WHERE id = ?", (selected_user[0],))
+            members.commit()
+            print("User deleted successfully")
+            return     
+        print("We couldn't find that user, please try again.")
+        return
 
     def checkUserList(self):
         trainerDB= sqlite3.connect('trainers.db')
