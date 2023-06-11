@@ -9,11 +9,16 @@ def login_trainer():
   trainers = sqlite3.connect('trainers.db')
   trainerdb = trainers.cursor()
   username = input("Enter your username: ")
+  valUSR=Validation.check_username(username)
   password = input("Enter your password: ")
-  
+  valPW=Validation.check_password(password)
+  result=False
+  if not (valUSR or valPW):
+    result=False
+  else:
   #needs to be compared to hash
-  trainerdb.execute("SELECT * FROM trainers WHERE username = ? AND password = ?", (username, password))
-  result = trainerdb.fetchone()
+    trainerdb.execute("SELECT * FROM trainers WHERE username = ? AND password = ?", (username, Hashing.GetPW(password)))
+    result = trainerdb.fetchone()
   if result:
     print("Login successful")
     #close the connection

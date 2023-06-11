@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "FitPlus.py",
-            "console": "integratedTerminal",
+            "console": "externalTerminal",
             "justMyCode": true
         },{
             "name": "Python: main",

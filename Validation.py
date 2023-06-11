@@ -4,6 +4,7 @@ import random
 import Validation
 import sqlite3
 import Hashing
+import Logging
 #search user
 def search_member(search_key):
 
@@ -116,6 +117,12 @@ def check_username(string):
             return False
         unique_set.add(char)
     return True
+
+def validateMenuInput(user, max):
+    try:
+      return True if int(user)<=int(max) else False
+    except:
+      return False
 
 def modifymember():
   members = sqlite3.connect('members.db')
