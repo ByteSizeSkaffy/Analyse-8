@@ -305,6 +305,7 @@ class SAdm(admin):
                 "[1] First Name\n"
                 "[2] Last Name\n"
                 "[3] Password\n"
+                "[4] Delete admin\n"
                 "Enter the corresponding number: "))
                         
                 if 1 <= field <= 3:
@@ -318,10 +319,17 @@ class SAdm(admin):
                 elif field == 2:
                     cursordb.execute("UPDATE super_user SET lastname = ? WHERE id = ?", (new_value, selected_user[0]))
                 elif field == 3:
-                #TODO: Password Hash call
                     cursordb.execute("UPDATE super_user SET password = ? WHERE id = ?", (Hashing.hashPW(new_value), selected_user[0]))
+                elif field == 4:
+                    if (input("Are you sure? \n [Y/N]: ").lower()=="y"):
+                        cursordb.execute("DELETE FROM super_user WHERE id = ?", (selected_user[0],))
+                        print("User deleted successfully")
+                        return     
+                    print("We couldn't find that user, please try again.")
+                    return
                 super_user.commit()
                 print("User updated successfully!")
+
         else:
                 print("Invalid field number. Please try again.")
         super_user.close()
